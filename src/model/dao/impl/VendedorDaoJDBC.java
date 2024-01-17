@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,40 @@ public class VendedorDaoJDBC implements VendedorDao{
 	
 	@Override
 	public void insert(Vendedor prObj) {
+		
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"INSERT INTO seller " +
+					"(Name, Email, BirthDate, BaseSalary, DepartmentId) "+
+					"VALUES (?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			
+			st.setString(1, prObj.getwNome());
+			st.setString(2, prObj.getwEmail());
+			st.setDate(3, new java.sql.Date(prObj.getwDataNasc().getTime()));
+			st.setDouble(4, prObj.getwSalBase());
+			st.setInt(5, prObj.getwDepartamento().getwId());
+			
+			int linhasAfetadas = st.executeUpdate();
+			
+			if (linhasAfetadas > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if (rs.next()) {
+					int id = rs.getInt(1);
+					prObj.setwId(id);
+				}
+				DB.closeResultSet(rs);
+			}
+			else {
+				throw new DbException("Erro não esperado, nenhuma linha afetada?");
+			}
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override

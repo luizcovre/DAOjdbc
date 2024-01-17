@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Date;
 import java.util.List;
 
 import model.dao.DaoFactory;
@@ -13,11 +14,11 @@ public class Program {
 		
 		VendedorDao vendedorDao = DaoFactory.createVendedorDao();
 		
-		Vendedor vendedor = vendedorDao.findById(3);		
-		System.out.println(vendedor);
+		/*Vendedor vendedor = vendedorDao.findById(3);		
+		System.out.println(vendedor);*/
 		
 		Departamento depart = new Departamento(2, null);
-		List<Vendedor> list = vendedorDao.findByDepartamento(depart);
+		/*List<Vendedor> list = vendedorDao.findByDepartamento(depart);
 		for (Vendedor obj : list) {
 			System.out.println(obj);
 		}
@@ -25,7 +26,11 @@ public class Program {
 		list = vendedorDao.findAll();
 		for (Vendedor obj : list) {
 			System.out.println(obj);
-		}
+		}*/
+		
+		Vendedor newVendedor = new Vendedor(null, "TESTE", "TESTE@EMAIL.COM", new Date(), 1234.56, depart);
+		vendedorDao.insert(newVendedor);
+		System.out.println("Inserido com o ID = " + newVendedor.getwId());
 	}
 
 }
