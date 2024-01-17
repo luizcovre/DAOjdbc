@@ -2,6 +2,7 @@ package application;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 import model.dao.DaoFactory;
 import model.dao.VendedorDao;
@@ -11,6 +12,8 @@ import model.entities.Vendedor;
 public class Program {
 
 	public static void main(String[] args) {
+		
+		Scanner sc = new Scanner(System.in);
 		
 		VendedorDao vendedorDao = DaoFactory.createVendedorDao();
 		
@@ -30,11 +33,18 @@ public class Program {
 		
 		Vendedor newVendedor = new Vendedor(null, "TESTE", "TESTE@EMAIL.COM", new Date(), 1234.56, depart);
 		vendedorDao.insert(newVendedor);
-		System.out.println("Inserido com o ID = " + newVendedor.getwId());*/
+		System.out.println("Inserido com o ID = " + newVendedor.getwId());
 		
 		vendedor =  vendedorDao.findById(1);
 		vendedor.setwNome("REPOLHO");
-		vendedorDao.update(vendedor);
+		vendedorDao.update(vendedor);*/
+		
+		System.out.print("Quer deletar qual Id? ");
+		int Id = sc.nextInt();
+		vendedorDao.deleteById(Id);
+		System.out.println("Deletou!!!");
+		
+		sc.close();
 	}
 
 }
